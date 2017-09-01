@@ -1,0 +1,23 @@
+{
+  "name": "metalsmith-lunr-index",
+  "version": "0.1.0",
+  "description": "Generate lunr indexes with full body search",
+  "main": "index.js",
+  "repository": "https://github.com/JacobMillward/metalsmith-lunr-index",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "metalsmith",
+    "lunr",
+    "index",
+    "search"
+  ],
+  "author": "Jacob Millward",
+  "license": "ISC",
+  "dependencies": {
+    "lunr": "^2.1.3",
+    "multimatch": "^2.1.0",
+    "sanitize-html": "^1.14.1"
+  }
+}
