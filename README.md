@@ -23,7 +23,7 @@ metalsmith.use(lunr()).
 
 ##Client Side Search
 
-Metalsmith-lunr-index will generate searchIndex.json. Include [lunr.js](https://raw.githubusercontent.com/olivernn/lunr.js/master/lunr.min.js) in your javascript source files. Client side search example can be found [here](http://lunrjs.com/example/).
+Metalsmith-lunr-index will generate search-index.json. Include [lunr.js](https://raw.githubusercontent.com/olivernn/lunr.js/master/lunr.min.js) in your javascript source files. Client side search example can be found [here](http://lunrjs.com/example/).
 
 Once the JSON file has been parsed into javascript, simply run the following:
 ```js
