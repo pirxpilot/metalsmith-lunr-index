@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Generate lunr indexes with full body search",
   "main": "index.js",
-  "repository": "https://github.com/JacobMillward/metalsmith-lunr-index",
+  "repository": "https://github.com/adenin-sites/metalsmith-lunr-index",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,7 +13,7 @@
     "index",
     "search"
   ],
-  "author": "Jacob Millward",
+  "author": "adenin TECHNOLOGIES",
   "license": "ISC",
   "dependencies": {
     "lunr": "^2.1.3",
