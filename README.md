@@ -19,9 +19,16 @@ var lunr = require('metalsmith-lunr-index');
 
 metalsmith.use(lunr()).
 ```
-*N.B. I am aware that this includes the full body of the page. This is for a basic implementation of full-body search with a small site. I will move this under a flag at a future point*
 
-##Client Side Search
+## Options
+By passsing in certain properties, you can change the behaviour.
+| option         | meaning           |
+| -------------- | ----------------- |
+| `pattern`      | Glob pattern for selecting files to index ***default: ['\*\*/\*.html']*** |
+| `indexPath`    | Output path for the index ***default: search-index.json***  |
+| `removeStemmer`| `true` or `false`, removes the stemmer from the indexing pipeline   |
+
+## Client Side Search
 
 Metalsmith-lunr-index will generate search-index.json. Include [lunr.js](https://raw.githubusercontent.com/olivernn/lunr.js/master/lunr.min.js) in your javascript source files. Client side search example can be found [here](http://lunrjs.com/example/).
 

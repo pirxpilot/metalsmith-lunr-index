@@ -1,6 +1,6 @@
 {
   "name": "metalsmith-lunr-index",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Generate lunr indexes with full body search",
   "main": "index.js",
   "repository": "https://github.com/adenin-sites/metalsmith-lunr-index",

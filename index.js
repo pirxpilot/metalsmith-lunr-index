@@ -9,6 +9,7 @@ function plugin(opts) {
   opts = opts || {};
   opts.pattern = opts.pattern || ['**/*.html'];
   opts.indexPath = opts.indexPath || 'search-index.json';
+  opts.removeStemmer = opts.removeStemmer || false;
 
   return function(files, metalsmith, done) {
     
@@ -36,6 +37,10 @@ function plugin(opts) {
 
       this.metadataWhitelist = ['position']
 
+      if(opts.removeStemmer){
+        this.pipeline.remove(lunr.stemmer);
+      }
+      
       documents.forEach(function(doc) {
         this.add(doc);
         // Format the store correctly
