@@ -1,56 +1,49 @@
-var
-  lunr = require('lunr'),
-  multimatch = require('multimatch'),
-  sanitizeHtml = require('sanitize-html');
+const lunr = require('lunr');
+const multimatch = require('multimatch');
+const sanitizeHtml = require('sanitize-html');
 
 module.exports = plugin;
 
-function plugin(opts) {
-  opts = opts || {};
-  opts.pattern = opts.pattern || ['**/*.html'];
-  opts.indexPath = opts.indexPath || 'search-index.json';
-  opts.removeStemmer = opts.removeStemmer || false;
+function plugin({
+  pattern = ['**/*.html'],
+  indexPath = 'search-index.json',
+  removeStemmer
+} = {}) {
 
-  return function(files, metalsmith, done) {
-    
-    var documents = [],
-        store = {};
-    // Assemble documents from metalsmith files
-    Object.keys(files).forEach(function(f) {
-      var data = files[f];
-      if (multimatch(f, opts.pattern).length) {
-        documents.push({
-          'path': data.path,
-          'body': sanitizeHtml(data.contents, { allowedTags: [], allowedAttributes: []})
-                  .replace(/[\n\r\t]+/g, ' ') // Strip newline and carriage return symbols
-                  .replace(/\s+/g, ' '), //Strip extra spaces
-          'title': data.title,
-        });
-      }
-    });
+  return function(files) {
+
+    const store = {};
 
     //Build the index using the documents
-    var idx = lunr(function() {
-      this.ref('path');
-      this.field('body');
-      this.field('title');
+    const index = lunr(function() {
+      const lunr = this;
 
-      this.metadataWhitelist = ['position']
+      lunr.ref('path');
+      lunr.field('body');
+      lunr.field('title');
 
-      if(opts.removeStemmer){
-        this.pipeline.remove(lunr.stemmer);
+      lunr.metadataWhitelist = ['position'];
+
+      if (removeStemmer) {
+        lunr.pipeline.remove(lunr.stemmer);
       }
-      
-      documents.forEach(function(doc) {
-        this.add(doc);
-        // Format the store correctly
-        store[doc.path] = { 'title': doc.title, 'body' : doc.body };
-      }, this, store);
+
+      // Assemble documents from metalsmith files
+      Object.entries(files).forEach(function([ path, { contents, title } ]) {
+        if (!multimatch(path, pattern).length) { return; }
+
+        let body = sanitizeHtml(contents, { allowedTags: [], allowedAttributes: []})
+          .replace(/[\n\r\t]+/g, ' ') // Strip newline and carriage return symbols
+          .replace(/\s+/g, ' '); //Strip extra spaces
+
+        lunr.add({ path, body, title });
+        store[path] = { title, body };
+      });
     });
-    //Write the index JSON to the metalsmith metadata for build, along with the documents
-    files[opts.indexPath] = {
-      contents: JSON.stringify({ store: store, index: idx })
+
+    // Write the index JSON to the metalsmith metadata for build, along with the documents
+    files[indexPath] = {
+      contents: JSON.stringify({ store, index })
     };
-    done();
   };
-};
+}
