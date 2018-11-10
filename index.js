@@ -1,6 +1,6 @@
 const lunr = require('lunr');
 const multimatch = require('multimatch');
-const sanitizeHtml = require('sanitize-html');
+const strip = require('strip');
 
 module.exports = plugin;
 
@@ -32,9 +32,8 @@ function plugin({
       Object.entries(files).forEach(function([ path, { contents, title } ]) {
         if (!multimatch(path, pattern).length) { return; }
 
-        let body = sanitizeHtml(contents, { allowedTags: [], allowedAttributes: []})
-          .replace(/[\n\r\t]+/g, ' ') // Strip newline and carriage return symbols
-          .replace(/\s+/g, ' '); //Strip extra spaces
+        // strip HTML and whitespace
+        let body = strip(contents.toString()).replace(/\s+/gim, ' ');
 
         lunr.add({ path, body, title });
         store[path] = { title, body };
