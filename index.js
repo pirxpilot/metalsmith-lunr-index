@@ -6,6 +6,7 @@ module.exports = plugin;
 
 function plugin({
   pattern = ['**/*.html'],
+  refKey,
   indexPath = 'search-index.json',
   removeStemmer
 } = {}) {
@@ -18,7 +19,7 @@ function plugin({
     const index = lunr(function() {
       const lunr = this;
 
-      lunr.ref('path');
+      lunr.ref('ref');
       lunr.field('body');
       lunr.field('title');
 
@@ -29,14 +30,16 @@ function plugin({
       }
 
       // Assemble documents from metalsmith files
-      Object.entries(files).forEach(function([ path, { contents, title } ]) {
+      Object.entries(files).forEach(function([ path, file ]) {
         if (!multimatch(path, pattern).length) { return; }
 
+        const { contents, title } = file;
+        const ref = refKey ? file[refKey] : path;
         // strip HTML and whitespace
         let body = strip(contents.toString()).replace(/\s+/gim, ' ');
 
-        lunr.add({ path, body, title });
-        store[path] = { title, body };
+        lunr.add({ ref, body, title });
+        store[ref] = { title, body };
       });
     });
 

@@ -14,19 +14,23 @@ Made because [metalsmith-lunr](https://github.com/CMClay/metalsmith-lunr) does n
 Include metalsmith-lunr-index in your metalsmith pipeline.
 
 Metalsmith-lunr can be used without options:
+
 ```js
 var lunr = require('metalsmith-lunr-index');
 
-metalsmith.use(lunr()).
+metalsmith.use(lunr());
+
 ```
 
 ## Options
 By passsing in certain properties, you can change the behaviour.
+
 | option         | meaning           |
 | -------------- | ----------------- |
 | `pattern`      | Glob pattern for selecting files to index ***default: ['\*\*/\*.html']*** |
 | `indexPath`    | Output path for the index ***default: search-index.json***  |
 | `removeStemmer`| `true` or `false`, removes the stemmer from the indexing pipeline   |
+| `refKey`       | property to be used as `ref` - if not defined path is used    |
 
 ## Client Side Search
 
@@ -35,6 +39,6 @@ Metalsmith-lunr-index will generate search-index.json. Include [lunr.js](https:/
 Once the JSON file has been parsed into javascript, simply run the following:
 ```js
 //index is the parsed JSON file
-idx = lunr.Index.load(index)
+var idx = lunr.Index.load(index);
 var results = idx.search("Your Search Terms Here");
 ```
